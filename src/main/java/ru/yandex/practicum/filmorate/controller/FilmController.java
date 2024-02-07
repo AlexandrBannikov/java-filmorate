@@ -15,7 +15,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/films")
 public class FilmController {
-    private final LocalDate MIN_RELEASE_DATE = LocalDate.of(1895,12,28);
+    private static final LocalDate MIN_RELEASE_DATE = LocalDate.of(1895,12,28);
 
     private int newID = 0;
 
