@@ -10,9 +10,12 @@ import java.time.LocalDate;
  */
 @Data
 public class Film {
+
     private Integer id;
+
     @NotBlank
     private String name;
+
     @NotBlank
     private String description;
 

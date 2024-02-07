@@ -15,8 +15,11 @@ import java.util.Map;
 @RequestMapping("/users")
 @RestController
 public class UserController {
+
     private static int newID = 0;
+
     private final Map<Integer, User> users = new HashMap<>();
+
     /*
     Создаем пользователя.
      */
@@ -29,6 +32,7 @@ public class UserController {
         log.info("Добавлен новый пользователь: " + user.getLogin());
         return user;
     }
+
     /*
     Обновляем пользователя.
      */
@@ -43,17 +47,20 @@ public class UserController {
         log.info("Пользователь обновлен!");
         return user;
     }
+
     /*
     Получаем всех пользователей.
      */
     @GetMapping
     public Collection<User> getAllUsers() {
-        log.info("Получен список всех пользователей.");
+        log.info("Получен список всех пользователей." + users.size());
         return users.values();
     }
+
     public User getUserById(Integer id) {
         return users.get(id);
     }
+
     private void validateUser(User user) {
         if (!user.getEmail().contains("@")) {
             throw new ValidationException("Ошибка, введен некорректный формат email!");
@@ -71,6 +78,7 @@ public class UserController {
             throw new ValidationException("Введена неверная дата рождения!");
         }
     }
+
     private int generateID() {
         return ++newID;
     }

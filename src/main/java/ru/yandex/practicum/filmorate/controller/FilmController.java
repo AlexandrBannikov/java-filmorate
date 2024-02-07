@@ -15,9 +15,12 @@ import java.util.Map;
 @RestController
 @RequestMapping("/films")
 public class FilmController {
-    private final static LocalDate MIN_RELEASE_DATE = LocalDate.of(1895,12,28);
-    private static int newID = 0;
+    private final LocalDate MIN_RELEASE_DATE = LocalDate.of(1895,12,28);
+
+    private int newID = 0;
+
     private final Map<Integer, Film> films = new HashMap<>();
+
     /*
     Создаем, добавляем фильм.
      */
@@ -51,9 +54,10 @@ public class FilmController {
      */
     @GetMapping
     public Collection<Film> getAllFilm() {
-        log.info("Все фильмы получены!");
+        log.info("Все фильмы получены!" + films.size());
         return films.values();
     }
+
     public void validateFilm(Film film) {
         if (film.getName().isBlank()) {
             throw new ValidationException("Отсутствует название фильма!");
@@ -68,10 +72,12 @@ public class FilmController {
             throw new ValidationException("Продолжительность фильма неверная!");
         }
     }
+
     public Film getFilmById(Integer id) {
         return films.get(id);
     }
-    private static int generateID() {
+
+    private int generateID() {
         return ++newID;
     }
 }
