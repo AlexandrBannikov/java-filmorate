@@ -15,7 +15,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/films")
 public class FilmController {
-    private static final LocalDate MIN_RELEASE_DATE = LocalDate.of(1895,12,28);
 
     private int newID = 0;
 
@@ -65,7 +64,7 @@ public class FilmController {
         if (film.getDescription().length() > 200) {
             throw new ValidationException("Слишком длинное описание фильма!");
         }
-        if (film.getReleaseDate().isBefore(MIN_RELEASE_DATE)) {
+        if (film.getReleaseDate().isBefore(LocalDate.parse("1895-12-28"))) {
             throw new ValidationException("Неверная дата выхода фильма!");
         }
         if (film.getDuration() < 0) {
