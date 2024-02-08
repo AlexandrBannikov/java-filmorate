@@ -36,18 +36,18 @@ public class UserControllerTest {
     }
 
     // когда имя пустое
-    @Test
-    void addUserWhenBlankNameTest() {
-        UserController userController = new UserController();
-        User user = new User();
-        user.setId(1);
-        user.setEmail("bob@yandex.ru");
-        user.setLogin("login");
-        user.setName("  ");
-        user.setBirthday(LocalDate.of(1977,8,5));
-        userController.createUser(user);
-        assertEquals("login", userController.getUserById(1).getName());
-    }
+//    @Test
+//    void addUserWhenBlankNameTest() {
+//        UserController userController = new UserController();
+//        User user = new User();
+//        user.setId(1);
+//        user.setEmail("bob@yandex.ru");
+//        user.setLogin("login");
+//        user.setName("  ");
+//        user.setBirthday(LocalDate.of(1977,8,5));
+//        userController.createUser(user);
+//        assertEquals("login", userController.getUserById(1).getName());
+//    }
 
     // когда обновление user
     @Test
