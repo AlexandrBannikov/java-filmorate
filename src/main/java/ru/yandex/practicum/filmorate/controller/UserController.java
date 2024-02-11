@@ -6,7 +6,6 @@ import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import javax.validation.Valid;
-import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,11 +24,11 @@ public class UserController {
      */
     @PostMapping
     public User createUser(@Valid @RequestBody User user) {
-        log.info("Получен запрос на создание пользователя!");
+        log.info("Получен запрос на создание пользователя! {}", user);
         validateUser(user);
         user.setId(generateID());
         users.put(user.getId(), user);
-        log.info("Добавлен новый пользователь: " + user.getLogin());
+        log.info("Добавлен новый пользователь: {}", user.getLogin());
         return user;
     }
 
@@ -38,13 +37,13 @@ public class UserController {
      */
     @PutMapping
     public User updateUser(@Valid @RequestBody User user) {
-        log.info("Получен запрос на обновление пользователя!");
+        log.info("Получен запрос на обновление пользователя! {}", user);
         if (!users.containsKey(user.getId())) {
-            log.debug("Введен неверный id!");
+            log.debug("Введен неверный id! {}", user.getId());
             throw new ValidationException("Вы ввели не существующий id!");
         }
         users.replace(user.getId(), user);
-        log.info("Пользователь обновлен!");
+        log.info("Пользователь обновлен! {}", user);
         return user;
     }
 
@@ -53,7 +52,7 @@ public class UserController {
      */
     @GetMapping
     public Collection<User> getAllUsers() {
-        log.info("Получен список всех пользователей." + users.size());
+        log.info("Получен список всех пользователей. {}", users.size());
         return users.values();
     }
 
@@ -62,20 +61,8 @@ public class UserController {
     }
 
     private void validateUser(User user) {
-        if (!user.getEmail().contains("@")) {
-            throw new ValidationException("Ошибка, введен некорректный формат email!");
-        }
-        if (user.getEmail().isEmpty() || user.getEmail().contains(" ")) {
-            throw new ValidationException("Введите email адрес без пробелов!");
-        }
-        if (user.getLogin().isEmpty() && user.getLogin().contains(" ")) {
-            throw new ValidationException("Ошибка! Введите логин без пробелов!");
-        }
         if (user.getName() == null || user.getName().isBlank()) {
             user.setName(user.getLogin());
-        }
-        if (user.getBirthday().isAfter(LocalDate.now())) {
-            throw new ValidationException("Введена неверная дата рождения!");
         }
     }
 
