@@ -1,13 +1,16 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.validation.Markers;
 
 import javax.validation.Valid;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -15,9 +18,10 @@ import java.util.Map;
 @RestController
 public class UserController {
 
-    private static int newID = 0;
+    private static int newID;
 
-    private final Map<Integer, User> users = new HashMap<>();
+    @Getter
+    private static final Map<Integer, User> users = new HashMap<>();
 
     /*
     Создаем пользователя.
@@ -26,7 +30,7 @@ public class UserController {
     public User createUser(@Valid @RequestBody User user) {
         log.info("Получен запрос на создание пользователя! {}", user);
         validateUser(user);
-        user.setId(generateID());
+        user.setId(++newID);
         users.put(user.getId(), user);
         log.info("Добавлен новый пользователь: {}", user.getLogin());
         return user;
@@ -36,13 +40,10 @@ public class UserController {
     Обновляем пользователя.
      */
     @PutMapping
+    @Validated(Markers.OnUpdate.class)
     public User updateUser(@Valid @RequestBody User user) {
         log.info("Получен запрос на обновление пользователя! {}", user);
-        if (!users.containsKey(user.getId())) {
-            log.debug("Введен неверный id! {}", user.getId());
-            throw new ValidationException("Вы ввели не существующий id!");
-        }
-        users.replace(user.getId(), user);
+        users.put(user.getId(), user);
         log.info("Пользователь обновлен! {}", user);
         return user;
     }
@@ -51,22 +52,14 @@ public class UserController {
     Получаем всех пользователей.
      */
     @GetMapping
-    public Collection<User> getAllUsers() {
+    public List<User> getAllUsers() {
         log.info("Получен список всех пользователей. {}", users.size());
-        return users.values();
-    }
-
-    public User getUserById(Integer id) {
-        return users.get(id);
+        return new ArrayList<>(users.values());
     }
 
     private void validateUser(User user) {
         if (user.getName() == null || user.getName().isBlank()) {
             user.setName(user.getLogin());
         }
-    }
-
-    private int generateID() {
-        return ++newID;
     }
 }

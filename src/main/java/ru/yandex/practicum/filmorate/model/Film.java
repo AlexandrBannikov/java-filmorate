@@ -1,8 +1,11 @@
 package ru.yandex.practicum.filmorate.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.validation.annotation.Validated;
+import ru.yandex.practicum.filmorate.controller.FilmController;
 import ru.yandex.practicum.filmorate.utils.FilmMinimumDate;
+import ru.yandex.practicum.filmorate.validation.InCollection;
+import ru.yandex.practicum.filmorate.validation.Markers;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -13,11 +16,12 @@ import java.time.LocalDate;
 /**
  * Film.
  */
-@Getter
-@Setter
+@Data
+@Validated
 public class Film {
 
-    private Integer id;
+    @InCollection(groups = Markers.OnUpdate.class, setHolder = FilmController.class)
+    private int id;
 
     @NotBlank
     private String name;
@@ -27,7 +31,7 @@ public class Film {
     private String description;
 
     @NotNull
-    @FilmMinimumDate(message = "Не соответствущая дата релиза фильма!")
+    @FilmMinimumDate
     private LocalDate releaseDate;
 
     @Positive
