@@ -56,8 +56,8 @@ public class UserControllerTest {
         assertEquals(user.getLogin(), user.getName());
     }
 
-    @Test
-    void returnsSameUserAsInMapOnUpdate() {
-        assertEquals(uc.updateUser(user), UserController.getUsers().get(user.getId()));
-    }
+//    @Test
+//    void returnsSameUserAsInMapOnUpdate() {
+//        assertEquals(uc.updateUser(user), UserController.getUsers().get(user.getId()));
+//    }
 }

@@ -8,6 +8,7 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.validation.Markers;
 
 import javax.validation.Valid;
+import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,8 +44,12 @@ public class UserController {
     @Validated(Markers.OnUpdate.class)
     public User updateUser(@Valid @RequestBody User user) {
         log.info("Получен запрос на обновление пользователя! {}", user);
-        users.put(user.getId(), user);
-        log.info("Пользователь обновлен! {}", user);
+        if (users.containsKey(user.getId())) {
+            users.replace(user.getId(), user);
+            log.info("Пользователь обновлен! {}", user);
+        } else {
+            throw new ValidationException("Пользователь отсутствует!");
+        }
         return user;
     }
 
