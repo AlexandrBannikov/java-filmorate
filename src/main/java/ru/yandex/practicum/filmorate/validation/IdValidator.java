@@ -11,6 +11,7 @@ import java.util.Set;
 public class IdValidator implements ConstraintValidator<InCollection, Integer> {
 
     private Class<?> field;
+
     @Override
     public void initialize(InCollection inCollection) {
         if (inCollection.setHolder() != null) {
