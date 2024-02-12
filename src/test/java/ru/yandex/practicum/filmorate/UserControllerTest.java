@@ -17,9 +17,9 @@ public class UserControllerTest {
     User user;
 
     @BeforeEach
-    public void createFilm() {
+    public void createUser() {
         user = new User();
-
+        user.setId(1);
         user.setName("Name");
         user.setLogin("login");
         user.setEmail("e@mail.fake");
@@ -45,6 +45,12 @@ public class UserControllerTest {
     }
 
     @Test
+    void returnsSameUserAsInMapOnUpdate() {
+        user.setId(1);
+        assertEquals(uc.updateUser(user), UserController.getUsers().get(user.getId()));
+    }
+
+    @Test
     void returnsSameUserAsInMapOnCreation() {
         assertEquals(uc.createUser(user), UserController.getUsers().get(user.getId()));
     }
@@ -55,9 +61,4 @@ public class UserControllerTest {
         uc.createUser(user);
         assertEquals(user.getLogin(), user.getName());
     }
-
-//    @Test
-//    void returnsSameUserAsInMapOnUpdate() {
-//        assertEquals(uc.updateUser(user), UserController.getUsers().get(user.getId()));
-//    }
 }

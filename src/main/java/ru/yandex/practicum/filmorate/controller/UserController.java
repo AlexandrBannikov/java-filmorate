@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.controller;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.User;
@@ -28,6 +29,7 @@ public class UserController {
     Создаем пользователя.
      */
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public User createUser(@Valid @RequestBody User user) {
         log.info("Получен запрос на создание пользователя! {}", user);
         validateUser(user);
@@ -44,12 +46,11 @@ public class UserController {
     @Validated(Markers.OnUpdate.class)
     public User updateUser(@Valid @RequestBody User user) {
         log.info("Получен запрос на обновление пользователя! {}", user);
-        if (users.containsKey(user.getId())) {
-            users.replace(user.getId(), user);
-            log.info("Пользователь обновлен! {}", user);
-        } else {
+        if (!users.containsKey(user.getId())) {
             throw new ValidationException("Пользователь отсутствует!");
         }
+        users.put(user.getId(), user);
+        log.info("Пользователь обновлен! {}", user);
         return user;
     }
 
