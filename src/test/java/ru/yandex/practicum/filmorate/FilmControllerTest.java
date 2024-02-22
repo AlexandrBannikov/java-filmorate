@@ -58,7 +58,7 @@ public class FilmControllerTest {
                 .build();
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
         assertEquals(1, violations.size());
-        assertEquals("размер должен находиться в диапазоне от 1 до 200", violations.iterator().next().getMessage());
+        assertEquals("Размер должен находиться в диапазоне от 1 до 200!", violations.iterator().next().getMessage());
     }
 
     @Test
