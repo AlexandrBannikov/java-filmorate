@@ -1,12 +1,8 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.validation.Markers;
 
 import javax.validation.Valid;
 import javax.validation.ValidationException;
@@ -20,22 +16,19 @@ import java.util.Map;
 @RestController
 public class UserController {
 
-    private static int newID;
+    private int newID = 0;
 
-    @Getter
-    private static final Map<Integer, User> users = new HashMap<>();
+    private final Map<Integer, User> users = new HashMap<>();
 
     /*
     Создаем пользователя.
      */
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
     public User createUser(@Valid @RequestBody User user) {
-        log.info("Получен запрос на создание пользователя! {}", user);
         validateUser(user);
         user.setId(++newID);
         users.put(user.getId(), user);
-        log.info("Добавлен новый пользователь: {}", user.getLogin());
+        log.info("Добавлен новый {} пользователь:", user.getLogin());
         return user;
     }
 
@@ -43,14 +36,13 @@ public class UserController {
     Обновляем пользователя.
      */
     @PutMapping
-    @Validated(Markers.OnUpdate.class)
     public User updateUser(@Valid @RequestBody User user) {
-        log.info("Получен запрос на обновление пользователя! {}", user);
+        validateUser(user);
         if (!users.containsKey(user.getId())) {
             throw new ValidationException("Пользователь отсутствует!");
         }
         users.put(user.getId(), user);
-        log.info("Пользователь обновлен! {}", user);
+        log.info("Пользователь {} обновлен!", user.getName());
         return user;
     }
 
@@ -63,7 +55,7 @@ public class UserController {
         return new ArrayList<>(users.values());
     }
 
-    private void validateUser(User user) {
+    public void validateUser(User user) {
         if (user.getName() == null || user.getName().isBlank()) {
             user.setName(user.getLogin());
         }

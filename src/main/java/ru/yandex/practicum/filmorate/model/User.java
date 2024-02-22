@@ -1,36 +1,31 @@
 package ru.yandex.practicum.filmorate.model;
 
+import lombok.Builder;
 import lombok.Data;
-import org.springframework.validation.annotation.Validated;
-import ru.yandex.practicum.filmorate.controller.UserController;
-import ru.yandex.practicum.filmorate.validation.InCollection;
-import ru.yandex.practicum.filmorate.validation.Markers;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 /**
  * User
  */
 @Data
-@Validated
+@Builder
 public class User {
 
-    @InCollection(groups = Markers.OnUpdate.class, setHolder = UserController.class)
-    private int id;
+    private Integer id;
 
-    @Email
-    @NotNull
+    @Email(message = "Электронная почта должна содержать символ @.")
+    @NotBlank(message = "Электронная почта не может быть пустой.")
     private String email;
 
-    @NotNull
+    @NotBlank(message = "Логин не может быть пустым.")
+    @Pattern(regexp = "\\S+", message = "Логин не может содержать пробелы.")
     private String login;
 
     private String name;
 
     @NotNull
-    @PastOrPresent
+    @PastOrPresent(message = "День рождения не может быть в будущем.")
     private LocalDate birthday;
 }

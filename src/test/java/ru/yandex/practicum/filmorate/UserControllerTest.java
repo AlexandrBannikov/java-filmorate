@@ -1,64 +1,97 @@
 package ru.yandex.practicum.filmorate;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.yandex.practicum.filmorate.controller.UserController;
 import ru.yandex.practicum.filmorate.model.User;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class UserControllerTest {
 
-    UserController uc = new UserController();
-    User user;
+    private User user;
+    private static Validator validator;
 
     @BeforeEach
-    public void createUser() {
-        user = new User();
-        user.setId(1);
-        user.setName("Name");
-        user.setLogin("login");
-        user.setEmail("e@mail.fake");
-        user.setBirthday(LocalDate.of(2008, 7, 19));
+    void setUp() {
+        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+        validator = validatorFactory.getValidator();
     }
 
     @Test
-    void getAllUsersReturnsArrayList() {
-        assertEquals(ArrayList.class, uc.getAllUsers().getClass());
+    void whenValidateUserEmailEmpty() {
+        user = User.builder()
+                .id(1)
+                .email("")
+                .login("ya")
+                .name("Ivan")
+                .birthday(LocalDate.of(1986, 11, 15))
+                .build();
+        Set<ConstraintViolation<User>> violations = validator.validate(user);
+        assertEquals(1, violations.size());
+        assertEquals("Электронная почта не может быть пустой.", violations.iterator().next().getMessage());
     }
 
     @Test
-    void setsIdOnCreation() {
-        int oldId = user.getId();
-        uc.createUser(user);
-        assertNotEquals(oldId, user.getId());
+    void validateUserEmailIncorrect() {
+        user = User.builder()
+                .id(1)
+                .email("123ya.ru")
+                .login("ya")
+                .name("Ivan")
+                .birthday(LocalDate.of(1986, 11, 15))
+                .build();
+        Set<ConstraintViolation<User>> violations = validator.validate(user);
+        assertEquals(1, violations.size());
+        assertEquals("Электронная почта должна содержать символ @.", violations.iterator().next().getMessage());
     }
 
     @Test
-    void putsUserToMapOnCreation() {
-        uc.createUser(user);
-        assertEquals(user, UserController.getUsers().get(user.getId()));
+    void validateUserLoginEmpty() {
+        user = User.builder()
+                .id(1)
+                .email("123@ya.ru")
+                .name("Ivan")
+                .birthday(LocalDate.of(1986, 11, 15))
+                .build();
+        Set<ConstraintViolation<User>> violations = validator.validate(user);
+        assertEquals(1, violations.size());
+        assertEquals("Логин не может быть пустым.",
+                violations.iterator().next().getMessage());
     }
 
     @Test
-    void returnsSameUserAsInMapOnUpdate() {
-        user.setId(1);
-        assertEquals(uc.updateUser(user), UserController.getUsers().get(user.getId()));
+    void validateUserLoginSpace() {
+        user = User.builder()
+                .id(1)
+                .email("123@ya.ru")
+                .login("y a")
+                .name("Ivan")
+                .birthday(LocalDate.of(1986, 11, 15))
+                .build();
+        Set<ConstraintViolation<User>> violations = validator.validate(user);
+        assertEquals(1, violations.size());
+        assertEquals("Логин не может содержать пробелы.",
+                violations.iterator().next().getMessage());
     }
 
     @Test
-    void returnsSameUserAsInMapOnCreation() {
-        assertEquals(uc.createUser(user), UserController.getUsers().get(user.getId()));
-    }
-
-    @Test
-    void setsLoginValueAsNameIfNameIsNullOnCreation() {
-        user.setName(null);
-        uc.createUser(user);
-        assertEquals(user.getLogin(), user.getName());
+    void validateUserBirthday() {
+        user = User.builder()
+                .id(1)
+                .email("123@ya.ru")
+                .login("ya")
+                .name("Ivan")
+                .birthday(LocalDate.MAX)
+                .build();
+        Set<ConstraintViolation<User>> violations = validator.validate(user);
+        assertEquals(1, violations.size());
+        assertEquals("День рождения не может быть в будущем.",
+                violations.iterator().next().getMessage());
     }
 }

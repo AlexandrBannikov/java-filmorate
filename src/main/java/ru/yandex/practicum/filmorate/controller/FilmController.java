@@ -2,12 +2,11 @@ package ru.yandex.practicum.filmorate.controller;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.validation.Markers;
 
 import javax.validation.Valid;
+import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,22 +15,20 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping("/films")
-@Validated
 public class FilmController {
 
     @Getter
-    private static final Map<Integer, Film> films = new HashMap<>();
-    private static int newID;
+    private final Map<Integer, Film> films = new HashMap<>();
+    private int newID;
 
     /*
     Создаем, добавляем фильм.
      */
     @PostMapping
     public Film createFilm(@Valid @RequestBody Film film) {
-        log.info("Запрос на добавление фильма. {}", film);
         film.setId(++newID);
         films.put(film.getId(), film);
-        log.info("Добавлен фильм. {}", film);
+        log.info("Добавлен {} фильм.", film.getName());
         return film;
     }
 
@@ -39,11 +36,14 @@ public class FilmController {
     Обновляем фильм.
      */
     @PutMapping
-    @Validated(Markers.OnUpdate.class)
     public Film updateFilm(@Valid @RequestBody Film film) {
-        log.info("Введен запрос на обновление фильма. {}", film);
+        int id = film.getId();
+        if (!films.containsKey(id)) {
+            log.debug("Фильм {} отсутствует!", film.getId());
+        throw new ValidationException("Фильм отсутствует!");
+        }
         films.put(film.getId(), film);
-        log.info("Фильм обновлен! {}", film);
+        log.info("Фильм {} обновлен!", film.getName());
         return film;
     }
 

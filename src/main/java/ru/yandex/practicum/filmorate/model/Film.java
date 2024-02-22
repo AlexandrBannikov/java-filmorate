@@ -1,11 +1,8 @@
 package ru.yandex.practicum.filmorate.model;
 
-import lombok.*;
-import org.springframework.validation.annotation.Validated;
-import ru.yandex.practicum.filmorate.controller.FilmController;
-import ru.yandex.practicum.filmorate.utils.FilmMinimumDate;
-import ru.yandex.practicum.filmorate.validation.InCollection;
-import ru.yandex.practicum.filmorate.validation.Markers;
+import lombok.Builder;
+import lombok.Data;
+import ru.yandex.practicum.filmorate.annotation.ReleaseDate;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -17,23 +14,21 @@ import java.time.LocalDate;
  * Film.
  */
 @Data
-@Validated
+@Builder
 public class Film {
 
-    @InCollection(groups = Markers.OnUpdate.class, setHolder = FilmController.class)
-    private int id;
+    private Integer id;
 
-    @NotBlank
+    @NotBlank(message = "Название фильма не может быть пустым!")
     private String name;
 
     @NotBlank
-    @Size(max = 200)
+    @Size(min = 1,max = 200)
     private String description;
-
     @NotNull
-    @FilmMinimumDate
+    @ReleaseDate(value = "1895-12-28", message = "Введите дату релиза не ранее 28 декабря 1895 года.")
     private LocalDate releaseDate;
 
-    @Positive
+    @Positive(message = "Продолжительность фильма должна быть больше 0.")
     private int duration;
 }
