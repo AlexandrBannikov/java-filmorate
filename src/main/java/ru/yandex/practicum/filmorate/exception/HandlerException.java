@@ -29,7 +29,7 @@ public class HandlerException {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public  ErrorResponse serverError(final Throwable e) {
+    public ErrorResponse serverError(final Throwable e) {
         log.debug("Неизвестная ошибка!");
         return new ErrorResponse("Неизвестная ошибка!", e.getMessage());
     }

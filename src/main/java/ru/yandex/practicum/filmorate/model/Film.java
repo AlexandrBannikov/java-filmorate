@@ -26,7 +26,7 @@ public class Film {
     private String name;
 
     @NotBlank
-    @Size(min = 1,max = 200,message = "Размер должен находиться в диапазоне от 1 до 200!")
+    @Size(min = 1, max = 200, message = "Размер должен находиться в диапазоне от 1 до 200!")
     private String description;
     @NotNull
     @ReleaseDate(value = "1895-12-28", message = "Введите дату релиза не ранее 28 декабря 1895 года.")

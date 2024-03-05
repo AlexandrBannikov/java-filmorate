@@ -14,6 +14,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = ReleaseDateValidator.class)
 public @interface ReleaseDate {
     String message() default "Дата релиза фильма не ранее {value}";
+
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};

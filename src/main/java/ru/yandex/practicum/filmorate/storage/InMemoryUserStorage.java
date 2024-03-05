@@ -88,7 +88,7 @@ public class InMemoryUserStorage implements UserStorage {
                 }
             }
             log.info("Получен друг пользователя!");
-                return userList;
+            return userList;
         } else {
             throw new UserNotFoundException("Пользователь не найден!");
         }

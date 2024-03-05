@@ -19,7 +19,7 @@ public class InMemoryFilmStorage implements FilmStorage {
         log.info("Добавлен новый фильм {} в список", film.getName());
         film.setId(newFilmID);
         film.setLike(new TreeSet<>());
-        films.put(newFilmID++,film);
+        films.put(newFilmID++, film);
         return film;
     }
 
@@ -31,7 +31,7 @@ public class InMemoryFilmStorage implements FilmStorage {
             films.put(film.getId(), film);
             return film;
         }
-    log.debug("Фильм в списке не найден");
+        log.debug("Фильм в списке не найден");
         throw new ValidationException("Нет фильма с таким id!");
     }
 
@@ -40,9 +40,9 @@ public class InMemoryFilmStorage implements FilmStorage {
         if (films.containsKey(filmID)) {
             Film film = films.get(filmID);
             film.getLike().add(filmID);
-            log.info("Пользоватлеь id = {} добавил лайк фильму id = {} ", userID,filmID);
+            log.info("Пользоватлеь id = {} добавил лайк фильму id = {} ", userID, filmID);
         } else {
-        throw new FilmNotFoundException("Фильм отсутствует!");
+            throw new FilmNotFoundException("Фильм отсутствует!");
         }
     }
 
