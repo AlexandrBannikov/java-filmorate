@@ -19,6 +19,7 @@ public class HandlerException {
         log.debug("Ошибка пользователя!");
         return new ErrorResponse("Ошибка пользователя!", e.getMessage());
     }
+
     @ExceptionHandler({MethodArgumentNotValidException.class, ConstraintViolationException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse badRequest(final Exception e) {
