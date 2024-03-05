@@ -1,4 +1,5 @@
 package ru.yandex.practicum.filmorate;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -15,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class FilmControllerTest {
 
     private Film film;
+
     private static Validator validator;
 
     @BeforeEach
@@ -90,6 +92,4 @@ public class FilmControllerTest {
         assertEquals("Продолжительность фильма должна быть больше 0.",
                 violations.iterator().next().getMessage());
     }
-
-
 }

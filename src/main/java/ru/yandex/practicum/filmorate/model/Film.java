@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.Set;
 
 /**
  * Film.
@@ -18,6 +19,8 @@ import java.time.LocalDate;
 public class Film {
 
     private Integer id;
+
+    private Set<Integer> like;
 
     @NotBlank(message = "Название фильма не может быть пустым!")
     private String name;
