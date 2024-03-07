@@ -28,7 +28,7 @@ public class FilmService {
 
     public Film deleteLike(Integer filmID, Integer userID) {
         inMemoryFilmStorage.deleteLike(filmID, userID);
-        return inMemoryFilmStorage.getFilmById(filmID);
+        return inMemoryFilmStorage.getFilmById(userID);
     }
 
     public List<Film> getPopularFilms(Integer idFilm) {
