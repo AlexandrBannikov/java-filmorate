@@ -34,7 +34,7 @@ public class FilmService {
     public List<Film> getPopularFilms(Integer idFilm) {
         log.debug("Получен список популярных фильмов в количестве {}.", idFilm);
         return inMemoryFilmStorage.getAllFilms().stream()
-                .sorted((o2, o1) -> o1.getLike().size() - o2.getLike().size())
+                .sorted((o1, o2) -> o2.getLike().size() - o1.getLike().size())
                 .limit(idFilm)
                 .collect(Collectors.toList());
     }

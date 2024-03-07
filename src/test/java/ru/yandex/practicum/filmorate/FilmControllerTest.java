@@ -17,10 +17,6 @@ public class FilmControllerTest {
 
     private Film film;
 
-    //InMemoryUserStorage inMemoryUserStorage;
-
-    //InMemoryFilmStorage inMemoryFilmStorage;
-
     private static Validator validator;
 
     @BeforeEach
