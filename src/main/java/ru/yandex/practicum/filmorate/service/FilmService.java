@@ -23,12 +23,12 @@ public class FilmService {
 
     public Film addLike(Integer filmID, Integer userID) {
         inMemoryFilmStorage.addLike(filmID, userID);
-        return inMemoryFilmStorage.getFilmById(userID);
+        return inMemoryFilmStorage.getFilmById(filmID);
     }
 
     public Film deleteLike(Integer filmID, Integer userID) {
         inMemoryFilmStorage.deleteLike(filmID, userID);
-        return inMemoryFilmStorage.getFilmById(userID);
+        return inMemoryFilmStorage.getFilmById(filmID);
     }
 
     public List<Film> getPopularFilms(Integer idFilm) {
