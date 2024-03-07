@@ -23,7 +23,7 @@ public class FilmService {
 
     public Film addLike(Integer filmID, Integer userID) {
         inMemoryFilmStorage.addLike(filmID, userID);
-        return inMemoryFilmStorage.getFilmById(filmID);
+        return inMemoryFilmStorage.getFilmById(userID);
     }
 
     public Film deleteLike(Integer filmID, Integer userID) {
