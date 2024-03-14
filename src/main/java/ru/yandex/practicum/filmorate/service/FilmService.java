@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.storage.FilmStorage;
+import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,11 +31,12 @@ public class FilmService {
         return inMemoryFilmStorage.getFilmById(filmID);
     }
 
-    public List<Film> getPopularFilms(Integer idFilm) {
-        log.debug("Получен список популярных фильмов в количестве {}.", idFilm);
-        return inMemoryFilmStorage.getAllFilms().stream()
-                .sorted((o1, o2) -> o2.getLike().size() - o1.getLike().size())
-                .limit(idFilm)
+    public List<Film> getPopularFilms(Integer count) {
+        log.debug("Получен список популярных фильмов в количестве {}.", count);
+        return getAllFilms()
+                .stream()
+                .sorted((film1, film2) -> film2.getLike().size() - film1.getLike().size())
+                .limit(count)
                 .collect(Collectors.toList());
     }
 

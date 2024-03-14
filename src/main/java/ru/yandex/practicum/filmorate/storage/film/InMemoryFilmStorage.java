@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.storage;
+package ru.yandex.practicum.filmorate.storage.film;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -16,7 +16,7 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     @Override
     public Film createFilm(Film film) {
-        log.info("Добавлен новый фильм {} в список", film.getName());
+        log.info("Добавлен новый фильм {} в список.", film.getName());
         film.setId(newFilmID);
         film.setLike(new TreeSet<>());
         films.put(newFilmID++, film);
@@ -39,7 +39,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     public void addLike(Integer filmID, Integer userID) {
         if (films.containsKey(filmID)) {
             Film film = films.get(filmID);
-            film.getLike().add(filmID);
+            film.getLike().add(userID);
             log.info("Пользоватлеь id = {} добавил лайк фильму id = {} ", userID, filmID);
         } else {
             throw new FilmNotFoundException("Фильм отсутствует!");
@@ -50,7 +50,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     public void deleteLike(Integer filmID, Integer userID) {
         if (films.containsKey(filmID)) {
             Film film = films.get(filmID);
-            film.getLike().remove(filmID);
+            film.getLike().remove(userID);
             log.debug("Пользователь {} удалил лайк с фильма с id = {}.", userID, filmID);
         } else {
             throw new FilmNotFoundException("Фильм не найден.");

@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.storage;
+package ru.yandex.practicum.filmorate.storage.user;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -16,7 +16,7 @@ public class InMemoryUserStorage implements UserStorage {
 
     @Override
     public User createUser(User user) {
-        log.info("Добавлен новый пользователь {}", user.getName());
+        log.info("Добавлен новый пользователь {}.", user.getName());
         user.setId(userNewID);
         user.setFriendID(new TreeSet<>());
         users.put(userNewID++, user);
@@ -31,7 +31,7 @@ public class InMemoryUserStorage implements UserStorage {
             users.put(user.getId(), user);
             return user;
         }
-        log.debug("Не найден пользователь {} с таким id", user.getId());
+        log.debug("Не найден пользователь {} с таким id.", user.getId());
         throw new ValidationException("Пользователь не найден!");
     }
 
@@ -63,7 +63,7 @@ public class InMemoryUserStorage implements UserStorage {
     @Override
     public User getUserById(Integer idUser) {
         if (users.containsKey(idUser)) {
-            log.debug("Получен пользователь {}", idUser);
+            log.debug("Получен пользователь {}.", idUser);
             return users.get(idUser);
         } else {
             throw new UserNotFoundException("Пользователь не найден!");
@@ -73,7 +73,7 @@ public class InMemoryUserStorage implements UserStorage {
 
     @Override
     public List<User> getAllUsers() {
-        log.info("Получен список пользователей, количество = {}", users.size());
+        log.info("Получен список пользователей, количество = {}.", users.size());
         return new ArrayList<>(users.values());
     }
 
