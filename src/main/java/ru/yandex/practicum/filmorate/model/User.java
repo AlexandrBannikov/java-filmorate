@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.*;
@@ -11,6 +12,7 @@ import java.util.Set;
  * User
  */
 @Data
+@Builder
 public class User {
 
     private Integer id;
