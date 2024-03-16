@@ -2,7 +2,7 @@ package ru.yandex.practicum.filmorate.storage.user;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.exception.UserNotFoundException;
+import ru.yandex.practicum.filmorate.exception.EntityNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import javax.validation.ValidationException;
@@ -42,7 +42,7 @@ public class InMemoryUserStorage implements UserStorage {
             users.get(friendID).getFriendID().add(userID);
             log.debug("Пользователь {} добавил пользователя {} в друзья. ", userID, friendID);
         } else {
-            throw new UserNotFoundException("Пользователь не найден!");
+            throw new EntityNotFoundException("Пользователь не найден!");
         }
     }
 
@@ -56,7 +56,7 @@ public class InMemoryUserStorage implements UserStorage {
                 log.debug("Пользователь {} удалил из друзей пользователя {}. ", userID, friendID);
             }
         } else {
-            throw new UserNotFoundException("Пользователь с данным id не найден.");
+            throw new EntityNotFoundException("Пользователь с данным id не найден.");
         }
     }
 
@@ -66,7 +66,7 @@ public class InMemoryUserStorage implements UserStorage {
             log.debug("Получен пользователь {}.", idUser);
             return users.get(idUser);
         } else {
-            throw new UserNotFoundException("Пользователь не найден!");
+            throw new EntityNotFoundException("Пользователь не найден!");
         }
 
     }
@@ -90,7 +90,7 @@ public class InMemoryUserStorage implements UserStorage {
             log.info("Получен друг пользователя!");
             return userList;
         } else {
-            throw new UserNotFoundException("Пользователь не найден!");
+            throw new EntityNotFoundException("Пользователь не найден!");
         }
     }
 }

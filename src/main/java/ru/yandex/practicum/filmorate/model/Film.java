@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Data;
 import ru.yandex.practicum.filmorate.annotation.ReleaseDate;
@@ -20,6 +21,7 @@ public class Film {
 
     private Integer id;
 
+    @JsonIgnore
     private Set<Integer> like;
 
     @NotBlank(message = "Название фильма не может быть пустым!")

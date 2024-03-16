@@ -1,6 +1,6 @@
 package ru.yandex.practicum.filmorate.model;
 
-import lombok.Builder;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.validation.constraints.*;
@@ -11,11 +11,11 @@ import java.util.Set;
  * User
  */
 @Data
-@Builder
 public class User {
 
     private Integer id;
 
+    @JsonIgnore
     private Set<Integer> friendID;
 
     @Email(message = "Электронная почта должна содержать символ @.")

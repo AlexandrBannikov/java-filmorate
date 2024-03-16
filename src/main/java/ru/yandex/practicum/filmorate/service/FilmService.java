@@ -1,9 +1,8 @@
 package ru.yandex.practicum.filmorate.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 
@@ -12,23 +11,19 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class FilmService {
 
-    private final FilmStorage inMemoryFilmStorage;
-
-    @Autowired
-    public FilmService(FilmStorage inMemoryFilmStorage) {
-        this.inMemoryFilmStorage = inMemoryFilmStorage;
-    }
+    private final FilmStorage filmStorage;
 
     public Film addLike(Integer filmID, Integer userID) {
-        inMemoryFilmStorage.addLike(filmID, userID);
-        return inMemoryFilmStorage.getFilmById(filmID);
+        filmStorage.addLike(filmID, userID);
+        return filmStorage.getFilmById(filmID);
     }
 
     public Film deleteLike(Integer filmID, Integer userID) {
-        inMemoryFilmStorage.deleteLike(filmID, userID);
-        return inMemoryFilmStorage.getFilmById(filmID);
+        filmStorage.deleteLike(filmID, userID);
+        return filmStorage.getFilmById(filmID);
     }
 
     public List<Film> getPopularFilms(Integer count) {
@@ -41,21 +36,18 @@ public class FilmService {
     }
 
     public List<Film> getAllFilms() {
-        return inMemoryFilmStorage.getAllFilms();
+        return filmStorage.getAllFilms();
     }
 
     public Film createFilms(Film film) {
-        return inMemoryFilmStorage.createFilm(film);
+        return filmStorage.createFilm(film);
     }
 
     public Film updateFilm(Film film) {
-        return inMemoryFilmStorage.updateFilm(film);
+        return filmStorage.updateFilm(film);
     }
 
     public Film getFilmById(Integer id) {
-        if (id != null) {
-            return inMemoryFilmStorage.getFilmById(id);
-        }
-        throw new ValidationException("При получении id получили null");
+        return filmStorage.getFilmById(id);
     }
 }

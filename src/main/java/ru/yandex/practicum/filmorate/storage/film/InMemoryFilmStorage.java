@@ -2,7 +2,7 @@ package ru.yandex.practicum.filmorate.storage.film;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.exception.FilmNotFoundException;
+import ru.yandex.practicum.filmorate.exception.EntityNotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import javax.validation.ValidationException;
@@ -42,7 +42,7 @@ public class InMemoryFilmStorage implements FilmStorage {
             film.getLike().add(userID);
             log.info("Пользоватлеь id = {} добавил лайк фильму id = {} ", userID, filmID);
         } else {
-            throw new FilmNotFoundException("Фильм отсутствует!");
+            throw new EntityNotFoundException("Фильм отсутствует!");
         }
     }
 
@@ -53,7 +53,7 @@ public class InMemoryFilmStorage implements FilmStorage {
             film.getLike().remove(userID);
             log.debug("Пользователь {} удалил лайк с фильма с id = {}.", userID, filmID);
         } else {
-            throw new FilmNotFoundException("Фильм не найден.");
+            throw new EntityNotFoundException("Фильм не найден.");
         }
     }
 
